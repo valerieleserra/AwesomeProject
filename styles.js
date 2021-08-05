@@ -2,10 +2,13 @@ import {StyleSheet} from 'react-native'
 
 export default StyleSheet.create({
   container: {
-      flex: 1,
-      //flexDirection: 'row'
-
-
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      backgroundColor:'white',
+      alignItems:'center',
+      justifyContent:'center'
+    
+      
   },
   box: {
       backgroundColor: 'lightgray',
@@ -16,6 +19,6 @@ export default StyleSheet.create({
       borderColor: 'darkslategray',
       borderWidth: 1,
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
   }
 })

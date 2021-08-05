@@ -1,47 +1,79 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { Text, SafeAreaView, ScrollView, View, ImageBackground} from 'react-native';
+import 'react-native-gesture-handler'
+import { StatusBar } from 'expo-status-bar'
+import React, {useState, useEffect} from 'react'
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
+import { Text, SafeAreaView, ScrollView, Button, ImageBackground, Alert} from 'react-native'
+
+import Home from './screens/HomeScreen'
+import styles from './styles'
 import Box from './components/Box'
 
-const img=
+const image = {
+  uri: 'https://r1.ilikewallpaper.net/iphone-wallpapers/download/19368/Explosion-Of-Colors-iphone-wallpaper-ilikewallpaper_com.jpg,'
+}
 
-import styles from './styles'
+const Stack = createStackNavigator()
 
 
 export default function App() {
+  const[restaurants, setRestaurants] = useState([])
   
-  // const boxes = [0,1,2,3,4,5,6,7,8,9]
+ useEffect(() => {
+   fetch('https://bocacode-intranet-api.web.app/restaurants')
+   .then(response => response.json())
+   .then(allRestaurants => setRestaurants (allRestaurants))
+   .catch(err => console.log(err))
+ },[])
 
-  const students = [
-    {name:'Val', age: 30, city: 'Coconut Creek'},
-    {name:'Chris', age: 29, city: 'Delray Beach'},
-    {name: 'Matt', age: 19, city: 'Delray Beach'},
-    {name: 'Emily', age: 25, city: 'Boca Raton'},
-    {name: 'Luis', age: 30, city: 'Coconut Creek'},
-    {name: 'Zack', age: 30, city: 'Coconut Creek'},
-    {name: 'Dan', age: 30, city: 'Coconut Creek'},
-    {name: 'Christian', age: 30, city: 'Coconut Creek'},]
+const handleSingleRoute = () => {
+  console.log('im clicked')
+}
   
   return (
-    <ScrollView>
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.customText}> Hello!!! </Text>
-          <StatusBar style="auto" />
-
-          <ImageBackground
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name='Home'
+          compnonent={HomeScreen}
+          options={{title:'Welcome'}}
+        />
+        <Stack.Screen
+          name="RestaurantDetails"
+          components={Box}
+          options={{title:'Restaurant Details'}}
+        
+        />
+       <ScrollView>
+         <SafeAreaView style={styles.container}>
+            <Text style={styles.customText}> Hello!!! </Text>
+            <StatusBar style="auto" />
+            <ImageBackground
             source={image} 
             resizeMode='cover' 
-            style={{...styles.container, flex:1, height:'100%'}}
-          >
+            style={{...styles.container}}
+            >
 
-      {/* <View> */}
-      {students.map((student) => {
-        return <Box entireStudent={student}/> //passing entire object 
-        })}
+            {/* //restaurants = useeffect */}
+
+      {restaurants.map((singleRestaurant, index) => {
+        console.log('here is my item', singleRestaurant, index)
+        return (
+          <>
+        <Box key={singleRestaurant.id}item={singleRestaurant} /> 
+        <Button
+           title='Details'
+           color='pink'
+           onPress={handleSingleRoute} />
+           </>
+        )})}
+        
+          
           </ImageBackground>
-        {/* </View> */}
       </SafeAreaView>
     </ScrollView>
+  </Stack.Navigator>
+</NavigationContainer>
   );
 }
 
