@@ -14,5 +14,4 @@ export default function Box({item}){
             <Text>{rating}</Text>
         </View>
     )
-
 }
